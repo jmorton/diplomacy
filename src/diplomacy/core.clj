@@ -3,15 +3,12 @@
   [:require [diplomacy.board :refer :all]])
 
 
-(defn adjacent
-  [prov]
+(defn adjacent [prov]
   (apply clojure.set/union
          (filter (fn [b] (contains? b prov)) boundaries)))
 
-
 (defn coastal? [prov]
   (some water-set (adjacent prov)))
-
 
 (defn adjacent? [p1 p2]
   (contains? boundaries #{p1 p2}))
@@ -31,6 +28,7 @@
         b1 (get boundary p1)
         b2 (get boundary p2)]
     (and
+     (not (contains? (meta boundary) :land-only))
      (adjacent? p1 p2)
      (coastal? p1)
      (coastal? p2)
@@ -44,19 +42,11 @@
      (+ (count (:armies power)) (count (:fleets power)))))
 
 
-; valid does not imply feasible.
-(defn valid? [[action power unit src dest]]
-  ; power occuppies source?
-  ;   adjacent to destination unless convoy?
-  ;   convoyed? ooo requires other orders...
-  ; if unit is armies - land destination?
-  ; if unit is fleets - water or coastal land?
-  ;
-  (let []))
+(defn valid-move? [power [type src dest] game]
+  ;; does power have unit type occupying src?
+  ;; for an army
+  (adjacent-land? src dest)
+  ;; for a fleet
+  (adjacent-coast? src dest)
+  (adjacent-water? src dest))
 
-(defn resolve
-  [orders])
-
-(def a #{^:east 'wat})
-
-(meta (first (seq a)))

@@ -1,14 +1,14 @@
 (ns diplomacy.board)
 
 ; a game consists of powers with armies, fleets, and cities.
-(def game {
-            :russia  { :armies #{ 'Moscow 'Warsaw }
-                       :fleets #{ 'Sevastapol (with-meta 'Saint-Petersburg { :coast :south })}
-                       :cities #{ 'Moscow 'Warsaw' 'Sevastapol 'Saint-Petersburg }}
+(def game {:russia  {:armies #{ 'Moscow 'Warsaw }
+                     :fleets #{ 'Sevastapol (with-meta 'Saint-Petersburg { :coast :south })}
+                     :cities #{ 'Moscow 'Warsaw' 'Sevastapol 'Saint-Petersburg }}
 
-            :austria { :armies #{ 'Vienna 'Budapest }
-                       :fleets #{ 'Trieste }
-                       :cities #{ 'Vienna 'Budapest 'Trieste }}})
+           :austria {:armies #{ 'Vienna 'Budapest }
+                     :fleets #{ 'Trieste }
+                     :cities #{ 'Vienna 'Budapest 'Trieste }}
+           })
 
 (def city-set #{'Saint-Petersburg
                 'Moscow
@@ -17,7 +17,10 @@
                 'Finland
                 'Vienna
                 'Budapest
-                'Trieste })
+                'Trieste
+                'London
+                'Liverpool
+                'Edinburgh})
 
 
 (def land-set #{'Finland
@@ -34,13 +37,24 @@
                 'Tyrolia
                 'Vienna
                 'Budapest
-                'Trieste })
+                'Trieste
+                'London
+                'Wales
+                'Liverpool
+                'York
+                'Edinburgh
+                'Clyde})
 
 (def water-set #{'Black-Sea
                  'Gulf-of-Bothnia
                  'Barents-Sea
                  'Baltic-Sea
-                 'Norwegian-Sea })
+                 'Norwegian-Sea
+                 'North-Sea
+                 'English-Channel
+                 'Irish-Sea
+                 'North-Atlantic
+                 })
 
 
 (def boundaries #{ #{'Moscow 'Saint-Petersburg}
@@ -49,12 +63,12 @@
                    #{'Moscow 'Ukraine}
                    #{'Moscow 'Stevastapol}
                    ; StP. is coastally adjacent along the north...
-                   #{ (with-meta 'Saint-Petersburg {:coast :north}) 'Barents-Sea }
-                   #{ (with-meta 'Saint-Petersburg {:coast :north}) 'Norway }
+                   #{(with-meta 'Saint-Petersburg {:coast :north}) 'Barents-Sea }
+                   #{(with-meta 'Saint-Petersburg {:coast :north}) 'Norway }
                    ; StP. is coastally adjacent along the south...
-                   #{ (with-meta 'Saint-Petersburg {:coast :south}) 'Gulf-of-Bothnia}
-                   #{ (with-meta 'Saint-Petersburg {:coast :south}) 'Finland}
-                   #{ (with-meta 'Saint-Petersburg {:coast :south}) 'Livonia}
+                   #{(with-meta 'Saint-Petersburg {:coast :south}) 'Gulf-of-Bothnia}
+                   #{(with-meta 'Saint-Petersburg {:coast :south}) 'Finland}
+                   #{(with-meta 'Saint-Petersburg {:coast :south}) 'Livonia}
                    #{'Warsaw 'Livonia}
                    #{'Warsaw 'Ukraine}
                    #{'Gulf-of-Bothnia 'Finland}
@@ -67,26 +81,16 @@
                    #{'Sweden 'Norway}
                    #{'Sweden 'Gulf-of-Bothnia}
                    #{'Norway 'Norwegian-Sea}
-                   #{'Norway 'Barents-Sea}})
-
-
-(def russia
-  { :armies #{'Moscow 'Warsaw}
-    :fleets #{^:south 'Saint-Petersburg 'Stevastapol}
-    :cities #{'Moscow 'Saint-Petersburg 'Warsaw 'Stevastapol} })
-
-(def turkey   #{'Saint-Petersburg
-                'Livonia
-                'Moscow
-                'Warsaw
-                'Ukraine
-                'Stevastapol
-                'Sweden
-                'Norway
-                'Galacia
-                'Bohemia
-                'Tyrolia
-                'Vienna
-                'Budapest
-                'Trieste })
-
+                   #{'Norway 'Barents-Sea}
+                   #{'London 'York}
+                   #{'London 'Wales}
+                   #{'London 'English-Channel}
+                   #{'London 'North-Sea}
+                   #{'York 'Wales}
+                   ^:land-only #{'York 'Liverpool}
+                   #{'York 'Edinburgh}
+                   #{'York 'North-Sea}
+                   #{'Liverpool 'Wales}
+                   #{'Liverpool 'Clyde}
+                   #{'Liverpool 'Irish-Sea}
+                   #{'Liverpool 'North-Atlantic}})

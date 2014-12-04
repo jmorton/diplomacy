@@ -1,8 +1,8 @@
 (ns diplomacy.core-test
   (:require [clojure.test :refer :all]
-            [diplomacy.core :refer :all] :reload))
+            [diplomacy.core :refer :all]
+            [diplomacy.board :refer :all] :reload))
 
-; These tests make assumptions on data in diplomacy.board
 
 (deftest core
 
@@ -17,31 +17,40 @@
     (is (not (adjacent-water? 'Saint-Petersburg 'Barents-Sea))))
 
   (testing "Adjacent coasts"
+    ;; no special north/south coast case
     (is (adjacent-coast? 'Finland 'Sweden))
+    ;; these coasts are adjacent...
     (is (adjacent-coast? 'Finland (with-meta 'Saint-Petersburg {:coast :south})))
+    ;; but these *coasts* are not adjacent...
     (is (not (adjacent-coast? 'Finland (with-meta 'Saint-Petersburg {:coast :north}))))
+    ;; this boundary does not exist (it is ambiguous)
     (is (not (adjacent-coast? 'Finland 'Saint-Petersburg))) ; this boundary does not exist!
+    ;; although adjacent...
     (is (not (adjacent-coast? 'Livonia 'Moscow)))
+    ;; although they run along the same body of water...
     (is (not (adjacent-coast? 'Livonia 'Finland)))
+    ;; these adjacent territories don't share a coast...
+    (is (not (adjacent-coast? 'York 'Liverpool)))
 
   (testing "Coastal"
     (is (coastal? 'Saint-Petersburg))
-    (is (not (coastal? 'Russia))))))
+    (is (not (coastal? 'Russia)))))
 
-;;   (testing "Army attack orders"
-;;     (let [russia { :armies [ "Livonia" "Moscow" "Ukraine" ]
-;;                    :fleets [ "Baltic Sea" ]}
-;;           lands #{ "Livonia" "Moscow" "Ukraine" }
-;;           waters #{"Baltic Sea"}
-;;           boundaries #{ #{"Livonia" "Baltic Sea"}
-;;                         #{"Livonia" "Moscow"}
-;;                         #{"Livonia" "Ukraine"}}]
-;;       ; yes, armies can move to land
-;;       (is (valid? '(attack russia :armies "Livonia" "Moscow")))
-;;       ; units most move to an adjacent province
-;;       (is (not (valid? '(attack russia :armies "Livonia" "Ukraine"))) )
-;;       ; armies cannot walk on water
-;;       (is (not (valid? '(attack russia :armies "Livonia" "Baltic Sea"))))))
+  (testing "Basic rules"
+    (testing "valid Army attack orders"
+      (let [game { :england { :armies #{'York}}}]
+        (is (valid-move? :england [:army 'York 'Edinburgh] game) "army can move to adjacent land")
+        (is (not (valid-move? :england [:army 'York 'North-Sea] game)) "armies can't walk on water")
+        (is (not (valid-move? :england [:army 'York 'Clyde] game)) "armies can't skip provinces")))
+    (testing "Fleet attack orders"
+      (let [game { :england { :fleets #{'York}}}]
+        (is (valid-move? :england [:fleet 'York 'Edinburgh] game))
+        (is (valid-move? :england [:fleet 'York 'London] game))
+        (is (valid-move? :england [:fleet 'York 'North-Sea] game))
+        (is (not (valid-move? :england [:fleet 'York 'Liverpool] game)) "not coastally adjacent")
+        (is (not (valid-move? :england [:fleet 'York 'English-Channel] game)) "not adjacent")
+        (is (not (valid-move? :england [:fleet 'London 'York] game))) "no fleet in london"))))
+
 ;;   ;; Configure fleets
 ;;   (testing "Fleet attack orders"
 ;;       ; a fleet on the north coast of StP.  cross to the Barents Sea
