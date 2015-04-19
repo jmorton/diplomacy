@@ -6,39 +6,46 @@
 
 (deftest core
 
-  (testing "Adjacent land"
-    (is (adjacent-land? 'Livonia 'Moscow))
-    (is (adjacent-land? 'Moscow 'Livonia))
-    (is (not (adjacent-land? 'Moscow 'Finland))))
+  (testing "Primitive geography logic"
 
-  (testing "Adjacent waters"
-    (is (adjacent-water? 'Gulf-of-Bothnia 'Baltic-Sea))
-    (is (not (adjacent-water? 'Gulf-of-Bothnia 'Barents-Sea)))
-    (is (not (adjacent-water? 'Saint-Petersburg 'Barents-Sea))))
+    (testing "Adjacent land"
+      (is (adjacent-land? 'Livonia 'Moscow))
+      (is (adjacent-land? 'Moscow 'Livonia))
+      (is (not (adjacent-land? 'Moscow 'Finland))))
 
-  (testing "Adjacent coasts"
-    ;; no special north/south coast case
-    (is (adjacent-coast? 'Finland 'Sweden))
-    ;; these coasts are adjacent...
-    (is (adjacent-coast? 'Finland (with-meta 'Saint-Petersburg {:coast :south})))
-    ;; but these *coasts* are not adjacent...
-    (is (not (adjacent-coast? 'Finland (with-meta 'Saint-Petersburg {:coast :north}))))
-    ;; this boundary does not exist (it is ambiguous)
-    (is (not (adjacent-coast? 'Finland 'Saint-Petersburg))) ; this boundary does not exist!
-    ;; although adjacent...
-    (is (not (adjacent-coast? 'Livonia 'Moscow)))
-    ;; although they run along the same body of water...
-    (is (not (adjacent-coast? 'Livonia 'Finland)))
-    ;; these adjacent territories don't share a coast...
-    (is (not (adjacent-coast? 'York 'Liverpool)))
+    (testing "Adjacent waters"
+      (is (adjacent-water? 'Gulf-of-Bothnia 'Baltic-Sea))
+      (is (not (adjacent-water? 'Gulf-of-Bothnia 'Barents-Sea)))
+      (is (not (adjacent-water? 'Saint-Petersburg 'Barents-Sea))))
 
-  (testing "Coastal"
-    (is (coastal? 'Saint-Petersburg))
-    (is (not (coastal? 'Russia)))))
+    (testing "Adjacent coasts"
+      ;; no special north/south coast case
+      (is (adjacent-coast? 'Finland 'Sweden))
+      ;; these coasts are adjacent...
+      (is (adjacent-coast? 'Finland (with-meta 'Saint-Petersburg {:coast :south})))
+      ;; but these *coasts* are not adjacent...
+      (is (not (adjacent-coast? 'Finland (with-meta 'Saint-Petersburg {:coast :north}))))
+      ;; this boundary does not exist (it is ambiguous)
+      (is (not (adjacent-coast? 'Finland 'Saint-Petersburg))) ; this boundary does not exist!
+      ;; although adjacent...
+      (is (not (adjacent-coast? 'Livonia 'Moscow)))
+      ;; although they run along the same body of water...
+      (is (not (adjacent-coast? 'Livonia 'Finland)))
+      ;; these adjacent territories don't share a coast...
+      (is (not (adjacent-coast? 'York 'Liverpool)))
 
-  (testing "Basic rules"
-    (testing "valid Army attack orders"
-      (let [game { :england { :armies #{'York}}}]
+      (testing "Coastal"
+        (is (coastal? 'Saint-Petersburg))
+        (is (not (coastal? 'Russia))))))
+
+  (testing "Basic Checks"
+    (testing "Move to an area that is not a neigh (6.A.1)"
+      (let [game {:england {:fleets #{'North-Sea}}}]
+        (is (not (valid-move? :england [:fleet 'North-Sea 'Picardy])))))
+    (testing "Move army to sea (6.A.2)")
+    (testing "Move fleet to land (6.A.3)")
+    (testing "Moving to an area that is not a neighbor (6.A.1)"
+      (let [game {:england {:armies #{'York}}}]
         (is (valid-move? :england [:army 'York 'Edinburgh] game) "army can move to adjacent land")
         (is (not (valid-move? :england [:army 'York 'North-Sea] game)) "armies can't walk on water")
         (is (not (valid-move? :england [:army 'York 'Clyde] game)) "armies can't skip provinces")))

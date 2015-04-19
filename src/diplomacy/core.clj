@@ -49,4 +49,3 @@
   ;; for a fleet
   (adjacent-coast? src dest)
   (adjacent-water? src dest))
-
