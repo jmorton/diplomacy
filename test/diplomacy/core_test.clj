@@ -63,10 +63,10 @@
 ;; Configure fleets
   (testing "Fleet attack orders"
       ; a fleet on the north coast of StP.  cross to the Barents Sea
-      (is (valid? '(attack russia :fleets "Saint Petersburg" "Barents Sea")))
+      (is (valid-move? '(attack russia :fleets "Saint Petersburg" "Barents Sea")))
       ; a fleet on the south coast of StP. cannot cross to the Barents Sea
-      (is (not (valid? '(attack russia :fleets "Saint Petersburg" "Barents Sea"))))
+      (is (not (valid-move? '(attack russia :fleets "Saint Petersburg" "Barents Sea"))))
       ; a fleet on the south coast of StP. can move to Livonia
-      (is (valid? '(attack russia :fleets "Saint Petersburg" "Livonia")))
+      (is (valid-move? '(attack russia :fleets "Saint Petersburg" "Livonia")))
       ; a fleet on the north coast of StP. cannot cross to coastal Livonia"
-      (is (not (valid? '(attack russia :fleets "Saint Petersburg", "Livonia"))))))
+      (is (not (valid-move? '(attack russia :fleets "Saint Petersburg", "Livonia"))))))

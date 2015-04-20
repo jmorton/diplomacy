@@ -41,7 +41,6 @@
   (- (count (:cities power))
      (+ (count (:armies power)) (count (:fleets power)))))
 
-
 (defn valid-move? [power [type src dest] game]
   (adjacent-land? src dest)
   (adjacent-coast? src dest)

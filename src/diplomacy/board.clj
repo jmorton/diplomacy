@@ -68,9 +68,9 @@
 
 (def land-set (union austria england france germany italy russia turkey neutral))
 
-(defn city? [province] )
+(defn city? [province])
 
-(def city-set (filter #(:city (meta %)) land-set)
+(def city-set (filter #(:city (meta %)) land-set))
 
 ;; could add ^:city to province and filter land-set...
 (def city-set (set '[Moscow Warsaw Saint-Petersburg Stevastapol
@@ -103,19 +103,19 @@
                       East-Mediterranean]))
 
 
-(def-province Bulgaria
-  :land Constantinople Rumania Serbia Greece
-  :east-coast Constantinople Rumania Black-Sea Constantinople
-  :north-coast Constantinople Greece Aegean-Sea)
+;; (def-province Bulgaria
+;;   :land Constantinople Rumania Serbia Greece
+;;   :east-coast Constantinople Rumania Black-Sea Constantinople
+;;   :north-coast Constantinople Greece Aegean-Sea)
 
-(def-province Mid-Atlantic
-  Brest
-  Gascony
-  Portugal
-  North-Africa
-  English-Channel
-  Irish-Sea
-  North-Atlantic)
+;; (def-province Mid-Atlantic
+;;   Brest
+;;   Gascony
+;;   Portugal
+;;   North-Africa
+;;   English-Channel
+;;   Irish-Sea
+;;   North-Atlantic)
 
 ;; (set coll) is used to avoid errors stemming
 ;; from inadvertant duplicates of boundaries
