@@ -43,9 +43,6 @@
 
 
 (defn valid-move? [power [type src dest] game]
-  ;; does power have unit type occupying src?
-  ;; for an army
   (adjacent-land? src dest)
-  ;; for a fleet
   (adjacent-coast? src dest)
   (adjacent-water? src dest))

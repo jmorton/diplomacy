@@ -108,13 +108,6 @@
   :east-coast Constantinople Rumania Black-Sea Constantinople
   :north-coast Constantinople Greece Aegean-Sea)
 
-bulgaria is land
-balgaria has an east and south coast
-bulgaria is connected to serbia
-the east coast is connected to rumania, constantinople, and the black sea
-the south coast is connected to greece, constantinople, and the aegean sea
-
-
 (def-province Mid-Atlantic
   Brest
   Gascony

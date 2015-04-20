@@ -3,6 +3,8 @@
             [diplomacy.core :refer :all]
             [diplomacy.board :refer :all] :reload))
 
+;; Use these tests too
+;; http://web.inter.nl.net/users/L.B.Kruijswijk/
 
 (deftest core
 
@@ -56,21 +58,15 @@
         (is (valid-move? :england [:fleet 'York 'North-Sea] game))
         (is (not (valid-move? :england [:fleet 'York 'Liverpool] game)) "not coastally adjacent")
         (is (not (valid-move? :england [:fleet 'York 'English-Channel] game)) "not adjacent")
-        (is (not (valid-move? :england [:fleet 'London 'York] game))) "no fleet in london"))))
+        (is (not (valid-move? :england [:fleet 'London 'York] game))) "no fleet in london")))
 
-;;   ;; Configure fleets
-;;   (testing "Fleet attack orders"
-;;       ; a fleet on the north coast of StP.  cross to the Barents Sea
-;;       (is (valid? '(attack russia :fleets "Saint Petersburg" "Barents Sea")))
-;;       ; a fleet on the south coast of StP. cannot cross to the Barents Sea
-;;       (is (not (valid? '(attack russia :fleets "Saint Petersburg" "Barents Sea"))))
-;;       ; a fleet on the south coast of StP. can move to Livonia
-;;       (is (valid? '(attack russia :fleets "Saint Petersburg" "Livonia")))
-;;       ; a fleet on the north coast of StP. cannot cross to coastal Livonia"
-;;       (is (not (valid? '(attack russia :fleets "Saint Petersburg", "Livonia"))))
-
-
-
-; attack
-; convoy
-; support
+;; Configure fleets
+  (testing "Fleet attack orders"
+      ; a fleet on the north coast of StP.  cross to the Barents Sea
+      (is (valid? '(attack russia :fleets "Saint Petersburg" "Barents Sea")))
+      ; a fleet on the south coast of StP. cannot cross to the Barents Sea
+      (is (not (valid? '(attack russia :fleets "Saint Petersburg" "Barents Sea"))))
+      ; a fleet on the south coast of StP. can move to Livonia
+      (is (valid? '(attack russia :fleets "Saint Petersburg" "Livonia")))
+      ; a fleet on the north coast of StP. cannot cross to coastal Livonia"
+      (is (not (valid? '(attack russia :fleets "Saint Petersburg", "Livonia"))))))
