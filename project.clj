@@ -4,7 +4,7 @@
   :license {:name "The MIT License"
             :url "http://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/core.logic "0.8.8"]])
+                 [org.clojure/core.logic "0.8.10"]])
 
 
 
