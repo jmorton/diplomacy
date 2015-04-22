@@ -41,7 +41,20 @@
   (- (count (:cities power))
      (+ (count (:armies power)) (count (:fleets power)))))
 
-(defn valid-move? [power [type src dest] game]
-  (adjacent-land? src dest)
-  (adjacent-coast? src dest)
-  (adjacent-water? src dest))
+(defn occupant?
+  "True if power occupies a province in this given game."
+  [power province game]
+  (or
+   (some #{province} (get-in game [power :armies] #{}))
+   (some #{province} (get-in game [power :fleets] #{}))))
+
+(defn valid-move?
+  "True if move is feasible for a type of unit.  Does not consider occupancy."
+  [power [unit-type src dest] game]
+  (if (occupant? power src game)
+    (cond
+     (= :army  unit-type) (adjacent-land?  src dest)
+     (= :fleet unit-type) (adjacent-water? src dest)
+     :else                (adjacent-coast? src dest))))
+
+
