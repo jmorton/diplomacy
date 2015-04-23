@@ -15,6 +15,7 @@
 
 
 (def spring-phases '[talk write resolve retreat])
+
 (def fall-phases (conj spring-phases 'build))
 
 ;; game keeps track of the year, season, and game phase:
@@ -154,5 +155,6 @@
                       #{'York 'North-Sea}
                       #{'Liverpool 'Wales}
                       #{'Liverpool 'Clyde}
+                      #{'Edinburgh 'North-Sea}
                       #{'Liverpool 'Irish-Sea}
                       #{'Liverpool 'North-Atlantic}]))

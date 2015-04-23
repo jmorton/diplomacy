@@ -10,7 +10,7 @@
   (contains? land-set prov))
 
 (defn water? [prov]
-  contains? water-set prov)
+  (contains? water-set prov))
 
 (defn coastal? [prov]
   (and (land? prov)
@@ -56,14 +56,12 @@
 
 (defn valid-move?
   "True if move is feasible for a type of unit.  Does not consider occupancy."
-  ;; the logic for adjacent-land/water is *flawed*
   ;; this does not handle convoy (intentionally)
   [power [unit-type src dest] game]
   (and
    (occupant? power src game)
    (adjacent? src dest)
    (cond
-     (= unit-type :fleet) ((some-fn water? coastal?) dest)
-     (= unit-type :army)  ((some-fn land? coastal?) dest)
-     :else false)))
+     (= unit-type :fleet) (or (water? dest) (adjacent-coast? src dest))
+     (= unit-type :army)  (land? dest))))
    
