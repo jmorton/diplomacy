@@ -2,16 +2,22 @@
   [:require [clojure.set]]
   [:require [diplomacy.board :refer :all]])
 
-
 (defn adjacent [prov]
   (apply clojure.set/union
          (filter (fn [b] (contains? b prov)) boundaries)))
 
-(defn coastal? [prov]
-  (some water-set (adjacent prov)))
+(defn land? [prov]
+  (contains? land-set prov))
 
-(defn adjacent? [p1 p2]
-  (contains? boundaries #{p1 p2}))
+(defn water? [prov]
+  contains? water-set prov)
+
+(defn coastal? [prov]
+  (and (land? prov)
+       (some water-set (adjacent prov))))
+
+(defn adjacent?
+  ([p1 p2] (contains? boundaries #{p1 p2})))
 
 (defn adjacent-land? [p1 p2]
   (and
@@ -50,11 +56,14 @@
 
 (defn valid-move?
   "True if move is feasible for a type of unit.  Does not consider occupancy."
+  ;; the logic for adjacent-land/water is *flawed*
+  ;; this does not handle convoy (intentionally)
   [power [unit-type src dest] game]
-  (if (occupant? power src game)
-    (cond
-     (= :army  unit-type) (adjacent-land?  src dest)
-     (= :fleet unit-type) (adjacent-water? src dest)
-     :else                (adjacent-coast? src dest))))
-
-
+  (and
+   (occupant? power src game)
+   (adjacent? src dest)
+   (cond
+     (= unit-type :fleet) ((some-fn water? coastal?) dest)
+     (= unit-type :army)  ((some-fn land? coastal?) dest)
+     :else false)))
+   
