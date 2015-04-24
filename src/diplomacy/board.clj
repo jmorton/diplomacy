@@ -157,4 +157,10 @@
                       #{'Liverpool 'Clyde}
                       #{'Edinburgh 'North-Sea}
                       #{'Liverpool 'Irish-Sea}
-                      #{'Liverpool 'North-Atlantic}]))
+                      #{'Liverpool 'North-Atlantic}
+                      #{'Brest 'Paris}
+                      #{'Brest 'Gascony}
+                      #{'Brest 'Picardy}
+                      #{'Brest 'English-Channel}
+                      #{'Brest 'Mid-Atlantic}
+                      ]))
