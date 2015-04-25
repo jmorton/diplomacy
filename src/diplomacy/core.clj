@@ -19,16 +19,6 @@
 (defn adjacent?
   ([p1 p2] (contains? boundaries #{p1 p2})))
 
-(defn adjacent-land? [p1 p2]
-  (and
-   (adjacent? p1 p2)
-   (clojure.set/subset? #{p1 p2} land-set)))
-
-(defn adjacent-water? [p1 p2]
-  (and
-   (adjacent? p1 p2)
-   (clojure.set/subset? #{p1 p2} water-set)))
-
 (defn adjacent-coast? [p1 p2]
   (let [boundary (get boundaries #{p1 p2})
         b1 (get boundary p1)
