@@ -65,10 +65,10 @@
   (testing "Fleet attack orders"
     (let [game { :russia { :fleets #{ (with-meta 'Saint-Petersburg {:coast :south})}}}]
       ;; a fleet on the north coast of StP.  cross to the Barents Sea
-      (is (valid-move? '(attack russia :fleets "Saint Petersburg" "Barents Sea")))
+      (is (valid-move? :russia [:fleet 'Saint-Petersburg 'Barents-Sea] game))
       ;; a fleet on the south coast of StP. cannot cross to the Barents Sea
-      (is (not (valid-move? '(attack russia :fleets "Saint Petersburg" "Barents Sea"))))
+      (is (not (valid-move? :russia [:fleet 'Saint-Petersburg 'Barents-Sea] game)))
       ;; a fleet on the south coast of StP. can move to Livonia
-      (is (valid-move? '(attack russia :fleets "Saint Petersburg" "Livonia")))
+      (is (valid-move? :russia '[:fleet 'Saint-Petersburg 'Livonia] game))
       ;; a fleet on the north coast of StP. cannot cross to coastal Livonia"
-      (is (not (valid-move? '(attack russia :fleets "Saint Petersburg", "Livonia")))))))
+      (is (not (valid-move? :russia '[:fleet 'Saint-Petersburg, 'Livonia] game))))))
