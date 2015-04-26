@@ -63,12 +63,13 @@
         (is (not (valid-move? :england [:fleet 'London 'York] game))) "no fleet in london"))))
 
   (testing "Fleet attack orders"
-    (let [game { :russia { :fleets #{ (with-meta 'Saint-Petersburg {:coast :south})}}}]
-      ;; a fleet on the north coast of StP.  cross to the Barents Sea
-      (is (valid-move? :russia [:fleet 'Saint-Petersburg 'Barents-Sea] game))
+    ;; a move order does not need to specify the current coast the fleet occuppies;
+    ;; it is derived from metadata contained on the power's fleet set
+    (let [game { :russia {:fleets #{'Saint-Petersburg}
+                          :coasts {'Saint-Petersburg :south}}}]
+      ;; a fleet on the south coast of StP. can move to Livonia
+      (is (valid-move? :russia '[:fleet 'Saint-Petersburg 'Livonia] game)) 
       ;; a fleet on the south coast of StP. cannot cross to the Barents Sea
       (is (not (valid-move? :russia [:fleet 'Saint-Petersburg 'Barents-Sea] game)))
-      ;; a fleet on the south coast of StP. can move to Livonia
-      (is (valid-move? :russia '[:fleet 'Saint-Petersburg 'Livonia] game))
       ;; a fleet on the north coast of StP. cannot cross to coastal Livonia"
-      (is (not (valid-move? :russia '[:fleet 'Saint-Petersburg, 'Livonia] game))))))
+      (is (not (valid-move? :russia '[:fleet 'Saint-Petersburg 'Livonia] game))))))
